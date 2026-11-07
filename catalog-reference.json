@@ -1,0 +1,1231 @@
+{
+  "schema_version": 1,
+  "reviewed_on": "2026-11-04",
+  "platforms": [
+    {
+      "id": "volcengine",
+      "name": "火山方舟",
+      "provider_preset": "volcengine",
+      "purpose": "图片与视频创作",
+      "credential_hint": "填写方舟 API Key。基础生成配置不需要 Access Key；素材库和管理面查询可稍后单独配置。",
+      "source_kind": "volcengine-control",
+      "source_url": "https://docs.volcengine.com/docs/ark/model-list?lang=zh",
+      "models": [
+        {
+          "model_key": "doubao-seedance-2-5-260628",
+          "display_name": "Seedance 2.5",
+          "purpose": "文字、首尾帧或多模态参考生成视频",
+          "operation_id": "video_generation",
+          "request_mode": "volcengine",
+          "settings": {
+            "durations": [
+              5,
+              10
+            ],
+            "default_duration": 5,
+            "resolutions": [
+              "720p"
+            ],
+            "default_resolution": "720p",
+            "ratios": [
+              "16:9",
+              "9:16"
+            ],
+            "default_ratio": "16:9"
+          },
+          "price_reference": {
+            "currency": "CNY",
+            "unit": "百万 Token",
+            "per": "1000000",
+            "reviewed_on": "2026-11-06",
+            "label": "火山方舟 720p 在线刊例价",
+            "endpoint_scoped": true,
+            "source_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh&redirect=1",
+            "note": "720p 输入不含参考视频为 70 元，含参考视频为 42 元，均按每百万 Token 计。用量以方舟实际返回的 completion_tokens 为准。",
+            "prices": [{
+              "label": "视频用量",
+              "meter": "output_token",
+              "rate_tiers": [
+                {"name": "default", "default": true, "priority": 0, "conditions": [],
+                 "rate": {"amount": "70", "per": "1000000"}},
+                {"name": "reference_video", "default": false, "priority": 10,
+                 "conditions": [{"field": "request.reference_video_present", "operator": "eq", "value": "true"}],
+                 "rate": {"amount": "42", "per": "1000000"}}
+              ]
+            }]
+          },
+          "binding": {
+            "billing_contract_key": "video-generation-token-v1",
+            "input_modalities": ["text", "image", "audio", "video"],
+            "input_roles": ["first_frame", "last_frame", "reference_image", "reference_audio", "reference_video"],
+            "input_contract": {
+              "version": 1,
+              "modalities": {"image": {"min_items": 0, "max_items": 20}, "audio": {"min_items": 0, "max_items": 3}, "video": {"min_items": 0, "max_items": 3}},
+              "roles": {
+                "first_frame": {"modality": "image", "min_items": 0, "max_items": 1},
+                "last_frame": {"modality": "image", "min_items": 0, "max_items": 1},
+                "reference_image": {"modality": "image", "min_items": 0, "max_items": 20},
+                "reference_audio": {"modality": "audio", "min_items": 0, "max_items": 3},
+                "reference_video": {"modality": "video", "min_items": 0, "max_items": 3}
+              }
+            }
+          },
+          "note": "后台试用和普通生成支持文字、私有首尾帧或最多 20 张私有参考图。首尾帧和参考图分开使用。支持最多 3 段私有参考音频，可单用或配合参考图。支持最多 3 段私有参考视频，发送需要方舟可访问的 HTTPS 素材链接。"
+        },
+        {
+          "model_key": "doubao-seedream-5-0-pro-260628",
+          "display_name": "Seedream 5.0 Pro",
+          "purpose": "文字生图与参考图修改",
+          "operation_id": "image_generation",
+          "request_mode": "volcengine",
+          "settings": {},
+          "price_reference": {
+            "currency": "CNY",
+            "unit": "张",
+            "per": "1",
+            "reviewed_on": "2026-11-06",
+            "label": "火山方舟单图刊例价",
+            "endpoint_scoped": true,
+            "source_url": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+            "note": "首张参考图免费，第二张起每张 0.02 元。输出图按实际像素分档，不超过 261 万像素每张 0.30 元，超过则为 0.60 元。",
+            "prices": [
+              {"label": "超出免费额度的参考图", "meter": "input_image", "rate_tiers": [
+                {"name": "default", "default": true, "priority": 0, "conditions": [],
+                 "rate": {"amount": "0.02", "per": "1"}}
+              ]},
+              {"label": "成功生成的单图", "meter": "output_image", "rate_tiers": [
+                {"name": "default", "default": true, "priority": 0, "conditions": [],
+                 "rate": {"amount": "0.60", "per": "1"}},
+                {"name": "up_to_2610000_pixels", "default": false, "priority": 10,
+                 "conditions": [{"field": "usage.output_image_pixels", "operator": "lte", "value": "2610000"}],
+                 "rate": {"amount": "0.30", "per": "1"}}
+              ]}
+            ]
+          },
+          "binding": {
+            "billing_contract_key": "image-input-output-v1",
+            "input_modalities": ["text", "image"],
+            "input_roles": ["reference_image"],
+            "input_contract": {
+              "version": 1,
+              "modalities": {"image": {"min_items": 0, "max_items": 10}},
+              "roles": {"reference_image": {"modality": "image", "min_items": 0, "max_items": 10}}
+            }
+          },
+          "note": "支持文字生单图和最多 10 张参考图生成/修改，后台可上传参考图进行受控试用；只验证本次样本。真实账号尚未验收，不支持图层拆分或专项局部重绘。"
+        }
+      ]
+    },
+    {
+      "id": "bailian",
+      "name": "阿里云百炼",
+      "protocol": "openai",
+      "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+      "workspace_base_url": "https://{workspace_id}.cn-beijing.maas.aliyuncs.com/compatible-mode/v1",
+      "purpose": "对话、图片理解、图片和视频创作",
+      "credential_hint": "填写华北 2（北京）的百炼 API Key。业务空间 ID 可选，留空使用官方公共地址。MiniMax H3 的可用性以当前账号权限及调用结果为准。其他地域可使用自定义添加入口。",
+      "workspace_required": false,
+      "source_kind": "bailian",
+      "provider_settings": {"stream_options_include_usage": true},
+      "source_url": "https://help.aliyun.com/zh/model-studio/text-generation-model/",
+      "models": [
+        {
+          "model_key": "MiniMax/MiniMax-H3",
+          "display_name": "MiniMax H3（千问平台）",
+          "purpose": "文字、首尾帧，或参考图、音频和视频生成视频 · 待试用",
+          "operation_id": "video_generation",
+          "request_mode": "dashscope-async-video",
+          "source_url": "https://help.aliyun.com/zh/model-studio/minimax-video-generation-api-reference",
+          "reviewed_on": "2026-11-06",
+          "settings": {
+            "durations": [
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15
+            ],
+            "default_duration": 5,
+            "resolutions": [
+              "768p",
+              "2k"
+            ],
+            "default_resolution": "768p",
+            "ratios": [
+              "16:9",
+              "9:16",
+              "1:1",
+              "4:3",
+              "3:4",
+              "21:9"
+            ],
+            "default_ratio": "16:9"
+          },
+          "binding": {
+            "input_modalities": ["text", "image", "audio", "video"],
+            "input_roles": ["first_frame", "last_frame", "reference_image", "reference_audio", "reference_video"],
+            "input_contract": {
+              "version": 1,
+              "modalities": {
+                "image": {"min_items": 0, "max_items": 9},
+                "audio": {"min_items": 0, "max_items": 3},
+                "video": {"min_items": 0, "max_items": 3}
+              },
+              "roles": {
+                "reference_video": {"modality": "video", "min_items": 0, "max_items": 3},
+                "reference_audio": {"modality": "audio", "min_items": 0, "max_items": 3},
+                "reference_image": {"modality": "image", "min_items": 0, "max_items": 9},
+                "first_frame": {"modality": "image", "min_items": 0, "max_items": 1},
+                "last_frame": {"modality": "image", "min_items": 0, "max_items": 1}
+              }
+            },
+            "billing_contract_key": "video-generation-input-output-v1"
+          },
+          "price_reference": {
+            "currency": "CNY",
+            "unit": "秒",
+            "per": "1",
+            "reviewed_on": "2026-11-06",
+            "label": "北京视频及参考素材价格",
+            "endpoint_scoped": true,
+            "source_url": "https://www.qianwenai.com/models/MiniMax%2FMiniMax-H3",
+            "note": "768P 每秒 0.50 元，2K 每秒 0.80 元。参考视频输入和生成视频输出分别计秒，同一分辨率下单价相同。参考图前五张免费，超出部分每张 0.20 元。发布价格、确认试用并完成结算后，可单独开放。",
+            "prices": [
+              {
+                "label": "超出免费额度的参考图",
+                "meter": "input_image",
+                "rate_tiers": [
+                  {"name": "default", "default": true, "priority": 0, "conditions": [], "rate": {"amount": "0.20", "per": "1"}}
+                ]
+              },
+              {
+                "label": "生成视频秒数",
+                "meter": "output_second",
+                "rate_tiers": [
+                  {
+                    "name": "default",
+                    "default": true,
+                    "priority": 0,
+                    "conditions": [],
+                    "rate": {
+                      "amount": "0.80",
+                      "per": "1"
+                    }
+                  },
+                  {
+                    "name": "standard_768p",
+                    "default": false,
+                    "priority": 10,
+                    "conditions": [
+                      {
+                        "field": "request.resolution",
+                        "operator": "eq",
+                        "value": "768p"
+                      }
+                    ],
+                    "rate": {
+                      "amount": "0.50",
+                      "per": "1"
+                    }
+                  }
+                ]
+              },
+              {
+                "label": "参考视频秒数",
+                "meter": "input_second",
+                "rate_tiers": [
+                  {
+                    "name": "default",
+                    "default": true,
+                    "priority": 0,
+                    "conditions": [],
+                    "rate": {
+                      "amount": "0.80",
+                      "per": "1"
+                    }
+                  },
+                  {
+                    "name": "standard_768p",
+                    "default": false,
+                    "priority": 10,
+                    "conditions": [
+                      {
+                        "field": "request.resolution",
+                        "operator": "eq",
+                        "value": "768p"
+                      }
+                    ],
+                    "rate": {
+                      "amount": "0.50",
+                      "per": "1"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "note": "在百炼控制台搜索 MiniMax，点击「立即开通」并确认授权，再使用华北 2（北京）的百炼 API Key。安装后需完成后台试用才能开放。支持私有首尾帧，或最多九张参考图、三段参考音频和三段参考视频。首尾帧与参考素材互斥。"
+        },
+        {
+          "model_key": "qwen-image-3.0-pro",
+          "display_name": "Qwen Image 3.0 Pro",
+          "purpose": "文字生图与参考图修改",
+          "operation_id": "image_generation",
+          "request_mode": "dashscope-images",
+          "source_url": "https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference",
+          "reviewed_on": "2026-11-06",
+          "settings": {
+            "parameter_schema": {
+              "version": 1,
+              "fields": [
+                {
+                  "key": "size",
+                  "type": "enum",
+                  "label": "图片尺寸",
+                  "default": "1024x1024",
+                  "options": [
+                    {
+                      "value": "1024x1024",
+                      "label": "1024x1024"
+                    },
+                    {
+                      "value": "1536x1024",
+                      "label": "1536x1024"
+                    },
+                    {
+                      "value": "1024x1536",
+                      "label": "1024x1536"
+                    },
+                    {
+                      "value": "2048x2048",
+                      "label": "2048x2048"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          "binding": {
+            "input_modalities": [
+              "text",
+              "image"
+            ],
+            "input_roles": [
+              "reference_image"
+            ],
+            "input_contract": {
+              "version": 1,
+              "modalities": {
+                "image": {
+                  "min_items": 0,
+                  "max_items": 3
+                }
+              },
+              "roles": {
+                "reference_image": {
+                  "modality": "image",
+                  "min_items": 0,
+                  "max_items": 3
+                }
+              }
+            },
+            "billing_contract_key": "image-input-output-v1"
+          },
+          "price_reference": {
+            "currency": "CNY",
+            "unit": "张",
+            "per": "1",
+            "reviewed_on": "2026-11-06",
+            "label": "官方人民币原价",
+            "endpoint_scoped": true,
+            "source_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+            "note": "北京实时调用人民币原价；输入参考图每张 0.02 元，文生图输入为零。Pro 输出像素不超过 225 万时每张 0.25 元，超过时 0.50 元；标准版均为 0.18 元。按供应商实际输入张数和输出像素结算，缺失用量保持待核对。仅填可编辑草稿，发布后才生效。",
+            "prices": [
+              {
+                "label": "输入参考图",
+                "meter": "input_image",
+                "rate_tiers": [
+                  {
+                    "name": "default",
+                    "default": true,
+                    "priority": 0,
+                    "conditions": [],
+                    "rate": {
+                      "amount": "0.02",
+                      "per": "1"
+                    }
+                  }
+                ]
+              },
+              {
+                "label": "输出图片（按实际像素分档）",
+                "meter": "output_image",
+                "rate_tiers": [
+                  {
+                    "name": "default",
+                    "default": true,
+                    "priority": 0,
+                    "conditions": [],
+                    "rate": {
+                      "amount": "0.5",
+                      "per": "1"
+                    }
+                  },
+                  {
+                    "name": "output_up_to_2250000_pixels",
+                    "default": false,
+                    "priority": 10,
+                    "conditions": [
+                      {
+                        "field": "usage.output_image_pixels",
+                        "operator": "lte",
+                        "value": "2250000"
+                      }
+                    ],
+                    "rate": {
+                      "amount": "0.25",
+                      "per": "1"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "note": "官方同步兼容接口；文字生单图或最多 3 张参考图修改。输入参考图也收费，输出按供应商实际返回的尺寸计价。未进行真实账号验收，不支持蒙版、多轮编辑或组图。"
+        },
+        {
+          "model_key": "qwen-image-3.0",
+          "display_name": "Qwen Image 3.0",
+          "purpose": "文字生图与参考图修改",
+          "operation_id": "image_generation",
+          "request_mode": "dashscope-images",
+          "source_url": "https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference",
+          "reviewed_on": "2026-11-06",
+          "settings": {
+            "parameter_schema": {
+              "version": 1,
+              "fields": [
+                {
+                  "key": "size",
+                  "type": "enum",
+                  "label": "图片尺寸",
+                  "default": "1024x1024",
+                  "options": [
+                    {
+                      "value": "1024x1024",
+                      "label": "1024x1024"
+                    },
+                    {
+                      "value": "1536x1024",
+                      "label": "1536x1024"
+                    },
+                    {
+                      "value": "1024x1536",
+                      "label": "1024x1536"
+                    },
+                    {
+                      "value": "2048x2048",
+                      "label": "2048x2048"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          "binding": {
+            "input_modalities": [
+              "text",
+              "image"
+            ],
+            "input_roles": [
+              "reference_image"
+            ],
+            "input_contract": {
+              "version": 1,
+              "modalities": {
+                "image": {
+                  "min_items": 0,
+                  "max_items": 3
+                }
+              },
+              "roles": {
+                "reference_image": {
+                  "modality": "image",
+                  "min_items": 0,
+                  "max_items": 3
+                }
+              }
+            },
+            "billing_contract_key": "image-input-output-v1"
+          },
+          "price_reference": {
+            "currency": "CNY",
+            "unit": "张",
+            "per": "1",
+            "reviewed_on": "2026-11-06",
+            "label": "官方人民币原价",
+            "endpoint_scoped": true,
+            "source_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+            "note": "北京实时调用人民币原价；输入参考图每张 0.02 元，文生图输入为零。Pro 输出像素不超过 225 万时每张 0.25 元，超过时 0.50 元；标准版均为 0.18 元。按供应商实际输入张数和输出像素结算，缺失用量保持待核对。仅填可编辑草稿，发布后才生效。",
+            "prices": [
+              {
+                "label": "输入参考图",
+                "meter": "input_image",
+                "rate_tiers": [
+                  {
+                    "name": "default",
+                    "default": true,
+                    "priority": 0,
+                    "conditions": [],
+                    "rate": {
+                      "amount": "0.02",
+                      "per": "1"
+                    }
+                  }
+                ]
+              },
+              {
+                "label": "输出图片（按实际像素分档）",
+                "meter": "output_image",
+                "rate_tiers": [
+                  {
+                    "name": "default",
+                    "default": true,
+                    "priority": 0,
+                    "conditions": [],
+                    "rate": {
+                      "amount": "0.18",
+                      "per": "1"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "note": "官方同步兼容接口；文字生单图或最多 3 张参考图修改。输入参考图也收费，输出按供应商实际返回的尺寸计价。未进行真实账号验收，不支持蒙版、多轮编辑或组图。"
+        },
+        {
+          "model_key": "qwen-image-2.1-pro",
+          "display_name": "Qwen Image 2.1 Pro",
+          "purpose": "文字生图与参考图修改",
+          "operation_id": "image_generation",
+          "request_mode": "dashscope-images",
+          "source_url": "https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference",
+          "reviewed_on": "2026-11-05",
+          "settings": {
+            "parameter_schema": {
+              "version": 1,
+              "fields": [
+                {
+                  "key": "size",
+                  "type": "enum",
+                  "label": "图片尺寸",
+                  "default": "1024x1024",
+                  "options": [
+                    {
+                      "value": "1024x1024",
+                      "label": "1024x1024"
+                    },
+                    {
+                      "value": "1536x1024",
+                      "label": "1536x1024"
+                    },
+                    {
+                      "value": "1024x1536",
+                      "label": "1024x1536"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          "binding": {
+            "input_modalities": [
+              "text",
+              "image"
+            ],
+            "input_roles": [
+              "reference_image"
+            ],
+            "input_contract": {
+              "version": 1,
+              "modalities": {
+                "image": {
+                  "min_items": 0,
+                  "max_items": 10
+                }
+              },
+              "roles": {
+                "reference_image": {
+                  "modality": "image",
+                  "min_items": 0,
+                  "max_items": 10
+                }
+              }
+            },
+            "billing_contract_key": "image-generation-current-v1"
+          },
+          "price_reference": {
+            "currency": "CNY",
+            "unit": "张",
+            "per": "1",
+            "reviewed_on": "2026-11-05",
+            "label": "官方人民币原价",
+            "endpoint_scoped": true,
+            "source_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+            "note": "北京地区实时调用原价，按成功输出张数计费，参考图输入不收费；价格为可修改草稿，发布后才生效。此基础配置每次只生成一张图，不使用促销、Batch 或 3.0 的输入收费规则。",
+            "prices": [
+              {
+                "label": "成功输出图片",
+                "meter": "output_image",
+                "rate_tiers": [
+                  {
+                    "name": "default",
+                    "default": true,
+                    "priority": 0,
+                    "conditions": [],
+                    "rate": {
+                      "amount": "0.25",
+                      "per": "1"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "note": "使用官方 OpenAI 兼容同步接口；支持文字生单图、最多 10 张普通参考图修改，不支持蒙版、图层或多轮编辑。真实账号未验收。"
+        },
+        {
+          "model_key": "qwen-image-2.1-turbo",
+          "display_name": "Qwen Image 2.1 Turbo",
+          "purpose": "文字生图与参考图修改",
+          "operation_id": "image_generation",
+          "request_mode": "dashscope-images",
+          "source_url": "https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference",
+          "reviewed_on": "2026-11-05",
+          "settings": {
+            "parameter_schema": {
+              "version": 1,
+              "fields": [
+                {
+                  "key": "size",
+                  "type": "enum",
+                  "label": "图片尺寸",
+                  "default": "1024x1024",
+                  "options": [
+                    {
+                      "value": "1024x1024",
+                      "label": "1024x1024"
+                    },
+                    {
+                      "value": "1536x1024",
+                      "label": "1536x1024"
+                    },
+                    {
+                      "value": "1024x1536",
+                      "label": "1024x1536"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          "binding": {
+            "input_modalities": [
+              "text",
+              "image"
+            ],
+            "input_roles": [
+              "reference_image"
+            ],
+            "input_contract": {
+              "version": 1,
+              "modalities": {
+                "image": {
+                  "min_items": 0,
+                  "max_items": 10
+                }
+              },
+              "roles": {
+                "reference_image": {
+                  "modality": "image",
+                  "min_items": 0,
+                  "max_items": 10
+                }
+              }
+            },
+            "billing_contract_key": "image-generation-current-v1"
+          },
+          "price_reference": {
+            "currency": "CNY",
+            "unit": "张",
+            "per": "1",
+            "reviewed_on": "2026-11-05",
+            "label": "官方人民币原价",
+            "endpoint_scoped": true,
+            "source_url": "https://help.aliyun.com/zh/model-studio/model-pricing",
+            "note": "北京地区实时调用原价，按成功输出张数计费，参考图输入不收费；价格为可修改草稿，发布后才生效。此基础配置每次只生成一张图，不使用促销、Batch 或 3.0 的输入收费规则。",
+            "prices": [
+              {
+                "label": "成功输出图片",
+                "meter": "output_image",
+                "rate_tiers": [
+                  {
+                    "name": "default",
+                    "default": true,
+                    "priority": 0,
+                    "conditions": [],
+                    "rate": {
+                      "amount": "0.1",
+                      "per": "1"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "note": "使用官方 OpenAI 兼容同步接口；支持文字生单图、最多 10 张普通参考图修改，不支持蒙版、图层或多轮编辑。真实账号未验收。"
+        },
+        {
+          "model_key": "qwen3.8-max",
+          "price_reference": {
+            "currency": "CNY",
+            "unit": "100万 Token",
+            "per": "1000000",
+            "reviewed_on": "2026-11-05",
+            "label": "官方人民币原价（隐式缓存）",
+            "endpoint_scoped": true,
+            "source_url": "https://www.qianwenai.com/models/qwen3.8-max",
+            "missing_cache_write": "ordinary_input_if_unreported",
+            "note": "北京地区实时调用原价，不自动采用限时优惠或 Batch 价格；仅覆盖隐式缓存，不启用显式缓存创建。所有计费项根据同一次请求的输入总 Token 选择档位；原始缓存写入缺失保持未知，结算规则需管理员单独确认发布。",
+            "prices": [
+              {
+                "label": "输入缓存命中",
+                "meter": "cache_read_input_token",
+                "rate_tiers": [
+                  {
+                    "name": "default",
+                    "default": true,
+                    "priority": 0,
+                    "conditions": [],
+                    "rate": {
+                      "amount": "1.5",
+                      "per": "1000000"
+                    }
+                  }
+                ]
+              },
+              {
+                "label": "输入未命中",
+                "meter": "input_token_uncached",
+                "rate_tiers": [
+                  {
+                    "name": "default",
+                    "default": true,
+                    "priority": 0,
+                    "conditions": [],
+                    "rate": {
+                      "amount": "12",
+                      "per": "1000000"
+                    }
+                  }
+                ]
+              },
+              {
+                "label": "输出（含思考）",
+                "meter": "output_token",
+                "rate_tiers": [
+                  {
+                    "name": "default",
+                    "default": true,
+                    "priority": 0,
+                    "conditions": [],
+                    "rate": {
+                      "amount": "36",
+                      "per": "1000000"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "display_name": "Qwen 3.8 Max",
+          "purpose": "复杂文本、推理与图片理解",
+          "operation_id": "conversation_generation",
+          "request_mode": "openai-chat",
+          "settings": {
+            "parameter_schema": {
+              "version": 1,
+              "fields": [
+                {
+                  "key": "max_tokens",
+                  "label": "最大完整输出 token（含思考）",
+                  "type": "integer",
+                  "min": 1,
+                  "max": 4096,
+                  "default": 512
+                },
+                {
+                  "key": "enable_thinking",
+                  "label": "深度思考",
+                  "type": "boolean",
+                  "default": true
+                }
+              ]
+            },
+            "parameter_bindings": {
+              "max_tokens": "max_completion_tokens",
+              "enable_thinking": "enable_thinking"
+            },
+            "features": {
+              "reasoning": true
+            }
+          },
+          "note": "默认开启思考，可关闭；支持上传图片提问，输出上限包含思考与回答。价格需核对输入长度档位和缓存规则；未完成真实账号验收，不表示已接入视频理解或历史思考回传。",
+          "binding": {
+            "billing_contract_key": "text-token-cache-split-v1",
+            "input_modalities": [
+              "text",
+              "image"
+            ],
+            "input_contract": {
+              "version": 1,
+              "modalities": {
+                "image": {
+                  "min_items": 0,
+                  "max_items": 2048
+                }
+              },
+              "roles": {}
+            }
+          }
+        },
+        {
+          "model_key": "qwen3.7-plus",
+          "price_reference": {
+            "currency": "CNY",
+            "unit": "100万 Token",
+            "per": "1000000",
+            "reviewed_on": "2026-11-05",
+            "label": "官方人民币原价（隐式缓存）",
+            "endpoint_scoped": true,
+            "source_url": "https://www.qianwenai.com/models/qwen3.7-plus",
+            "missing_cache_write": "ordinary_input_if_unreported",
+            "note": "北京地区实时调用原价，不自动采用限时优惠或 Batch 价格；仅覆盖隐式缓存，不启用显式缓存创建。所有计费项根据同一次请求的输入总 Token 选择档位；原始缓存写入缺失保持未知，结算规则需管理员单独确认发布。",
+            "prices": [
+              {
+                "label": "输入缓存命中",
+                "meter": "cache_read_input_token",
+                "rate_tiers": [
+                  {
+                    "name": "default",
+                    "default": true,
+                    "priority": 0,
+                    "conditions": [],
+                    "rate": {
+                      "amount": "1.2",
+                      "per": "1000000"
+                    }
+                  },
+                  {
+                    "name": "input_up_to_256k",
+                    "default": false,
+                    "priority": 10,
+                    "conditions": [
+                      {
+                        "field": "usage.input_token_total",
+                        "operator": "lte",
+                        "value": "256000"
+                      }
+                    ],
+                    "rate": {
+                      "amount": "0.4",
+                      "per": "1000000"
+                    }
+                  }
+                ]
+              },
+              {
+                "label": "输入未命中",
+                "meter": "input_token_uncached",
+                "rate_tiers": [
+                  {
+                    "name": "default",
+                    "default": true,
+                    "priority": 0,
+                    "conditions": [],
+                    "rate": {
+                      "amount": "6",
+                      "per": "1000000"
+                    }
+                  },
+                  {
+                    "name": "input_up_to_256k",
+                    "default": false,
+                    "priority": 10,
+                    "conditions": [
+                      {
+                        "field": "usage.input_token_total",
+                        "operator": "lte",
+                        "value": "256000"
+                      }
+                    ],
+                    "rate": {
+                      "amount": "2",
+                      "per": "1000000"
+                    }
+                  }
+                ]
+              },
+              {
+                "label": "输出（含思考）",
+                "meter": "output_token",
+                "rate_tiers": [
+                  {
+                    "name": "default",
+                    "default": true,
+                    "priority": 0,
+                    "conditions": [],
+                    "rate": {
+                      "amount": "24",
+                      "per": "1000000"
+                    }
+                  },
+                  {
+                    "name": "input_up_to_256k",
+                    "default": false,
+                    "priority": 10,
+                    "conditions": [
+                      {
+                        "field": "usage.input_token_total",
+                        "operator": "lte",
+                        "value": "256000"
+                      }
+                    ],
+                    "rate": {
+                      "amount": "8",
+                      "per": "1000000"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "display_name": "Qwen 3.7 Plus",
+          "purpose": "日常对话与图片理解",
+          "operation_id": "conversation_generation",
+          "request_mode": "openai-chat",
+          "settings": {
+            "parameter_schema": {
+              "version": 1,
+              "fields": [
+                {
+                  "key": "max_tokens",
+                  "label": "最大完整输出 token（含思考）",
+                  "type": "integer",
+                  "min": 1,
+                  "max": 4096,
+                  "default": 512
+                },
+                {
+                  "key": "enable_thinking",
+                  "label": "深度思考",
+                  "type": "boolean",
+                  "default": false
+                }
+              ]
+            },
+            "parameter_bindings": {
+              "max_tokens": "max_completion_tokens",
+              "enable_thinking": "enable_thinking"
+            },
+            "features": {
+              "reasoning": true
+            }
+          },
+          "note": "默认关闭思考，可开启；支持上传图片提问，输出上限包含思考与回答。价格需核对输入长度档位和缓存规则；未完成真实账号验收，不表示已接入视频理解或历史思考回传。",
+          "binding": {
+            "billing_contract_key": "text-token-cache-split-v1",
+            "input_modalities": [
+              "text",
+              "image"
+            ],
+            "input_contract": {
+              "version": 1,
+              "modalities": {
+                "image": {
+                  "min_items": 0,
+                  "max_items": 2048
+                }
+              },
+              "roles": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "minimax",
+      "name": "MiniMax 国内",
+      "protocol": "minimax",
+      "base_url": "https://api.minimaxi.com/v1",
+      "base_url_variants": ["https://api.minimax.cn/v1"],
+      "purpose": "语音合成与音色",
+      "credential_hint": "填写国内开放平台 API Key。按官方国内原价，复刻音色首次合成另收 9.90 元/音色，复刻接口内试听按所选模型的字符价收费。",
+      "source_kind": "minimax",
+      "source_url": "https://platform.minimax.cn/docs/api-reference/speech-t2a-http",
+      "models": [
+        {
+          "model_key": "speech-2.8-hd",
+          "display_name": "Speech 2.8 HD",
+          "purpose": "文本转语音",
+          "operation_id": "speech_synthesis",
+          "request_mode": "minimax-tts",
+          "binding": {"billing_contract_key": "audio-tts-current-v1"},
+          "settings": {
+            "max_input_chars": 3000,
+            "formats": [
+              "mp3",
+              "wav"
+            ],
+            "default_format": "mp3"
+          },
+          "price_reference": {
+            "currency": "CNY",
+            "unit": "计费字符",
+            "per": "10000",
+            "reviewed_on": "2026-11-06",
+            "label": "MiniMax 国内同步语音合成原价",
+            "endpoint_scoped": true,
+            "source_url": "https://platform.minimax.cn/docs/pricing/overview",
+            "note": "按上游报告的计费字符结算，汉字计两个字符。复刻音色首次合成的 9.90 元/音色是独立费用。",
+            "prices": [
+              {"label": "输入计费字符", "meter": "input_character", "peak": "3.50"}
+            ]
+          },
+          "note": "支持后台系统音色受控试用。价格草稿仅含合成字符费，复刻音色首次使用费独立核算。"
+        },
+        {
+          "model_key": "speech-2.8-turbo",
+          "display_name": "Speech 2.8 Turbo",
+          "purpose": "文本转语音",
+          "operation_id": "speech_synthesis",
+          "request_mode": "minimax-tts",
+          "binding": {"billing_contract_key": "audio-tts-current-v1"},
+          "settings": {
+            "max_input_chars": 3000,
+            "formats": [
+              "mp3",
+              "wav"
+            ],
+            "default_format": "mp3"
+          },
+          "price_reference": {
+            "currency": "CNY",
+            "unit": "计费字符",
+            "per": "10000",
+            "reviewed_on": "2026-11-06",
+            "label": "MiniMax 国内同步语音合成原价",
+            "endpoint_scoped": true,
+            "source_url": "https://platform.minimax.cn/docs/pricing/overview",
+            "note": "按上游报告的计费字符结算，汉字计两个字符。复刻音色首次合成的 9.90 元/音色是独立费用。",
+            "prices": [
+              {"label": "输入计费字符", "meter": "input_character", "peak": "2.00"}
+            ]
+          },
+          "note": "沿现有同步语音链路配置。价格草稿仅含合成字符费，复刻音色首次使用费独立核算。"
+        },
+        {
+          "model_key": "minimax-voice-clone",
+          "display_name": "MiniMax 快速复刻",
+          "purpose": "上传声音样本并创建音色",
+          "operation_id": "voice_clone",
+          "request_mode": "minimax-voice-clone",
+          "source_url": "https://platform.minimax.cn/docs/api-reference/voice-cloning-clone",
+          "reviewed_on": "2026-11-06",
+          "parameter_schema": {"version": 1, "fields": []},
+          "binding": {
+            "execution_modes": ["sync"],
+            "input_modalities": ["audio"],
+            "output_modalities": ["voice_resource"],
+            "input_adapter_key": "voice-source-v1",
+            "input_roles": ["source_audio"],
+            "input_contract": {
+              "version": 1,
+              "modalities": {"audio": {"min_items": 1, "max_items": 1}},
+              "roles": {"source_audio": {"modality": "audio", "min_items": 1, "max_items": 1}}
+            },
+            "features": [],
+            "usage_adapter_key": "voice-resource-create-v1",
+            "billing_contract_key": "voice-resource-create-v1",
+            "parameter_bindings": {"version": 1, "bindings": {}}
+          },
+          "note": "安装后待启用。创建音色与首次合成分开，创建不附带试听。"
+        }
+      ]
+    },
+    {
+      "id": "deepseek",
+      "name": "DeepSeek",
+      "protocol": "openai",
+      "base_url": "https://api.deepseek.com",
+      "purpose": "文本对话与推理",
+      "credential_hint": "填写 DeepSeek 开放平台 API Key。模型权限、账号余额及实际价格需在后续步骤确认。",
+      "source_kind": "deepseek",
+      "pricing_note": "缓存命中输入、未命中输入和输出分别计价；请分别设置售价，不要再对总输入重复收费。官方峰时为北京时间周一至周五 09:00–12:00、14:00–18:00（中国法定节假日除外）；其余为谷时，谷价为峰价的一半。以下是有核对日期的官方成本参考，价格预设使用官方人民币峰时价，首次设置时填入可编辑草稿，管理员确认发布后生效；不会随峰谷自动切换。已有模型需预览并确认更新计费契约，原价格不会自动改写。",
+      "provider_settings": {"stream_options_include_usage": true},
+      "source_url": "https://api-docs.deepseek.com/zh-cn/quick_start/pricing/",
+      "models": [
+        {
+          "model_key": "deepseek-flash",
+          "price_reference": {
+            "currency": "CNY",
+            "unit": "100万 Token",
+            "reviewed_on": "2026-11-05",
+            "prices": [
+              {
+                "label": "输入缓存命中",
+                "meter": "cache_read_input_token",
+                "peak": "0.04",
+                "off_peak": "0.02"
+              },
+              {
+                "label": "输入未命中",
+                "meter": "input_token_uncached",
+                "peak": "2",
+                "off_peak": "1"
+              },
+              {
+                "label": "输出",
+                "meter": "output_token",
+                "peak": "8",
+                "off_peak": "4"
+              }
+            ],
+            "per": "1000000"
+          },
+          "display_name": "DeepSeek Flash",
+          "purpose": "日常对话、看图与可选思考",
+          "operation_id": "conversation_generation",
+          "request_mode": "openai-chat",
+          "binding": {
+            "billing_contract_key": "text-token-cache-split-v1",
+            "input_modalities": ["text", "image"],
+            "input_contract": {
+              "version": 1,
+              "modalities": {"image": {"min_items": 0, "max_items": 600}},
+              "roles": {}
+            }
+          },
+          "settings": {
+            "features": {"reasoning": true},
+            "parameter_schema": {
+              "version": 1,
+              "fields": [
+                {
+                  "key": "max_tokens",
+                  "label": "最大完整输出 token（含思考）",
+                  "type": "integer",
+                  "min": 1,
+                  "max": 4096,
+                  "default": 512
+                },
+                {
+                  "key": "reasoning_effort",
+                  "label": "思考强度",
+                  "type": "enum",
+                  "default": "none",
+                  "options": [
+                    {"value": "none", "label": "关闭思考"},
+                    {"value": "low", "label": "低"},
+                    {"value": "high", "label": "高"},
+                    {"value": "max", "label": "最高"}
+                  ]
+                }
+              ]
+            },
+            "parameter_bindings": {
+              "max_tokens": "max_tokens",
+              "reasoning_effort": "reasoning_effort"
+            }
+          },
+          "note": "默认关闭思考，可在现有模型参数中选择低/高/最高；输出上限包含思考。可上传图片提问，图片与文字共同按供应商返回的输入 Token 计费；图片格式和大小以官方图像理解规范及本项目上传限制为准，未进行真实账号验收。"
+        },
+        {
+          "model_key": "deepseek-v4-pro",
+          "price_reference": {
+            "currency": "CNY",
+            "unit": "100万 Token",
+            "reviewed_on": "2026-11-05",
+            "prices": [
+              {
+                "label": "输入缓存命中",
+                "meter": "cache_read_input_token",
+                "peak": "0.30",
+                "off_peak": "0.15"
+              },
+              {
+                "label": "输入未命中",
+                "meter": "input_token_uncached",
+                "peak": "9.0",
+                "off_peak": "4.5"
+              },
+              {
+                "label": "输出",
+                "meter": "output_token",
+                "peak": "27.0",
+                "off_peak": "13.5"
+              }
+            ],
+            "per": "1000000"
+          },
+          "display_name": "DeepSeek V4 Pro",
+          "purpose": "复杂文本与推理",
+          "operation_id": "conversation_generation",
+          "request_mode": "openai-chat",
+          "binding": {"billing_contract_key": "text-token-cache-split-v1"},
+          "settings": {
+            "features": {"reasoning": true},
+            "parameter_schema": {
+              "version": 1,
+              "fields": [
+                {
+                  "key": "max_tokens",
+                  "label": "最大完整输出 token（含思考）",
+                  "type": "integer",
+                  "min": 1,
+                  "max": 4096,
+                  "default": 512
+                },
+                {
+                  "key": "reasoning_effort",
+                  "label": "思考强度",
+                  "type": "enum",
+                  "default": "high",
+                  "options": [
+                    {"value": "none", "label": "关闭思考"},
+                    {"value": "low", "label": "低"},
+                    {"value": "high", "label": "高"},
+                    {"value": "max", "label": "最高"}
+                  ]
+                }
+              ]
+            },
+            "parameter_bindings": {
+              "max_tokens": "max_tokens",
+              "reasoning_effort": "reasoning_effort"
+            }
+          },
+          "note": "默认高强度思考，也可关闭或选择低/最高；输出上限包含思考。不支持图片理解；需确认账号权限与价格，未进行真实账号验收。"
+        }
+      ]
+    }
+  ]
+}
