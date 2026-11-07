@@ -78,7 +78,10 @@
           "purpose": "文字生图与参考图修改",
           "operation_id": "image_generation",
           "request_mode": "volcengine",
-          "settings": {},
+          "settings": {
+            "sizes": ["1K", "1.5K", "2K"],
+            "default_size": "2K"
+          },
           "price_reference": {
             "currency": "CNY",
             "unit": "张",

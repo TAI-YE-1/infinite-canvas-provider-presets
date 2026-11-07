@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "package_id": "mainstream-platforms",
-  "sequence": 2,
+  "sequence": 3,
   "templates": [
     {
       "provider_family": "volcengine",
@@ -220,7 +220,32 @@
       "request_mode": "volcengine",
       "parameter_schema": {
         "version": 1,
-        "fields": []
+        "fields": [
+          {
+            "key": "size",
+            "label": "尺寸",
+            "type": "enum",
+            "control": "select",
+            "group": "output",
+            "order": 10,
+            "required": false,
+            "options": [
+              {
+                "value": "1K",
+                "label": "1K"
+              },
+              {
+                "value": "1.5K",
+                "label": "1.5K"
+              },
+              {
+                "value": "2K",
+                "label": "2K"
+              }
+            ],
+            "default": "2K"
+          }
+        ]
       },
       "binding": {
         "execution_modes": [
@@ -258,7 +283,16 @@
         "billing_contract_key": "image-input-output-v1",
         "parameter_bindings": {
           "version": 1,
-          "bindings": {}
+          "bindings": {
+            "size": {
+              "enabled": true,
+              "omit_when_empty": false,
+              "omit_when_false": false,
+              "path": "size",
+              "target": "operation_request",
+              "value_map": {}
+            }
+          }
         }
       },
       "price_preset": {
