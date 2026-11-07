@@ -1,0 +1,2147 @@
+{
+  "schema_version": 2,
+  "package_id": "mainstream-platforms",
+  "sequence": 2,
+  "templates": [
+    {
+      "provider_family": "volcengine",
+      "model_key": "doubao-seedance-2-5-260628",
+      "display_name": "Seedance 2.5",
+      "operation_id": "video_generation",
+      "request_mode": "volcengine",
+      "parameter_schema": {
+        "version": 1,
+        "fields": [
+          {
+            "key": "duration_second",
+            "label": "时长",
+            "type": "enum",
+            "control": "select",
+            "group": "output",
+            "order": 10,
+            "required": false,
+            "options": [
+              {
+                "value": 5,
+                "label": "5"
+              },
+              {
+                "value": 10,
+                "label": "10"
+              }
+            ],
+            "default": 5
+          },
+          {
+            "key": "aspect_ratio",
+            "label": "宽高比",
+            "type": "enum",
+            "control": "select",
+            "group": "output",
+            "order": 20,
+            "required": false,
+            "options": [
+              {
+                "value": "16:9",
+                "label": "16:9"
+              },
+              {
+                "value": "9:16",
+                "label": "9:16"
+              }
+            ],
+            "default": "16:9"
+          },
+          {
+            "key": "resolution",
+            "label": "分辨率",
+            "type": "enum",
+            "control": "select",
+            "group": "output",
+            "order": 30,
+            "required": false,
+            "options": [
+              {
+                "value": "720p",
+                "label": "720p"
+              }
+            ],
+            "default": "720p"
+          }
+        ]
+      },
+      "binding": {
+        "execution_modes": [
+          "async_task"
+        ],
+        "input_modalities": [
+          "text",
+          "image",
+          "audio",
+          "video"
+        ],
+        "output_modalities": [
+          "video"
+        ],
+        "input_adapter_key": "legacy-ai-model-runtime-v1",
+        "input_roles": [
+          "first_frame",
+          "last_frame",
+          "reference_image",
+          "reference_audio",
+          "reference_video"
+        ],
+        "input_contract": {
+          "version": 1,
+          "modalities": {
+            "image": {
+              "min_items": 0,
+              "max_items": 20
+            },
+            "audio": {
+              "min_items": 0,
+              "max_items": 3
+            },
+            "video": {
+              "min_items": 0,
+              "max_items": 3
+            }
+          },
+          "roles": {
+            "first_frame": {
+              "modality": "image",
+              "min_items": 0,
+              "max_items": 1
+            },
+            "last_frame": {
+              "modality": "image",
+              "min_items": 0,
+              "max_items": 1
+            },
+            "reference_image": {
+              "modality": "image",
+              "min_items": 0,
+              "max_items": 20
+            },
+            "reference_audio": {
+              "modality": "audio",
+              "min_items": 0,
+              "max_items": 3
+            },
+            "reference_video": {
+              "modality": "video",
+              "min_items": 0,
+              "max_items": 3
+            }
+          }
+        },
+        "features": [],
+        "usage_adapter_key": "current-video-generation-v1",
+        "billing_contract_key": "video-generation-token-v1",
+        "parameter_bindings": {
+          "version": 1,
+          "bindings": {
+            "aspect_ratio": {
+              "enabled": true,
+              "omit_when_empty": false,
+              "omit_when_false": false,
+              "path": "aspect_ratio",
+              "target": "operation_request",
+              "value_map": {}
+            },
+            "duration_second": {
+              "enabled": true,
+              "omit_when_empty": false,
+              "omit_when_false": false,
+              "path": "duration",
+              "target": "operation_request",
+              "value_map": {}
+            },
+            "resolution": {
+              "enabled": true,
+              "omit_when_empty": false,
+              "omit_when_false": false,
+              "path": "resolution",
+              "target": "operation_request",
+              "value_map": {}
+            }
+          }
+        }
+      },
+      "price_preset": {
+        "currency": "CNY",
+        "reviewed_on": "2026-11-06",
+        "label": "火山方舟 720p 在线刊例价",
+        "source_ref": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh&redirect=1",
+        "billing_contract_key": "video-generation-token-v1",
+        "charges": [
+          {
+            "key": "output_token",
+            "meter": "output_token",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "70",
+                  "per": "1000000"
+                }
+              },
+              {
+                "name": "reference_video",
+                "default": false,
+                "priority": 10,
+                "conditions": [
+                  {
+                    "field": "request.reference_video_present",
+                    "operator": "eq",
+                    "value": "true"
+                  }
+                ],
+                "rate": {
+                  "amount": "42",
+                  "per": "1000000"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "provider_family": "volcengine",
+      "model_key": "doubao-seedream-5-0-pro-260628",
+      "display_name": "Seedream 5.0 Pro",
+      "operation_id": "image_generation",
+      "request_mode": "volcengine",
+      "parameter_schema": {
+        "version": 1,
+        "fields": []
+      },
+      "binding": {
+        "execution_modes": [
+          "sync"
+        ],
+        "input_modalities": [
+          "text",
+          "image"
+        ],
+        "output_modalities": [
+          "image"
+        ],
+        "input_adapter_key": "legacy-ai-model-runtime-v1",
+        "input_roles": [
+          "reference_image"
+        ],
+        "input_contract": {
+          "version": 1,
+          "modalities": {
+            "image": {
+              "min_items": 0,
+              "max_items": 10
+            }
+          },
+          "roles": {
+            "reference_image": {
+              "modality": "image",
+              "min_items": 0,
+              "max_items": 10
+            }
+          }
+        },
+        "features": [],
+        "usage_adapter_key": "current-image-generation-v1",
+        "billing_contract_key": "image-input-output-v1",
+        "parameter_bindings": {
+          "version": 1,
+          "bindings": {}
+        }
+      },
+      "price_preset": {
+        "currency": "CNY",
+        "reviewed_on": "2026-11-06",
+        "label": "火山方舟单图刊例价",
+        "source_ref": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+        "billing_contract_key": "image-input-output-v1",
+        "charges": [
+          {
+            "key": "input_image",
+            "meter": "input_image",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "0.02",
+                  "per": "1"
+                }
+              }
+            ]
+          },
+          {
+            "key": "output_image",
+            "meter": "output_image",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "0.60",
+                  "per": "1"
+                }
+              },
+              {
+                "name": "up_to_2610000_pixels",
+                "default": false,
+                "priority": 10,
+                "conditions": [
+                  {
+                    "field": "usage.output_image_pixels",
+                    "operator": "lte",
+                    "value": "2610000"
+                  }
+                ],
+                "rate": {
+                  "amount": "0.30",
+                  "per": "1"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "provider_family": "bailian",
+      "model_key": "MiniMax/MiniMax-H3",
+      "display_name": "MiniMax H3（千问平台）",
+      "operation_id": "video_generation",
+      "request_mode": "dashscope-async-video",
+      "parameter_schema": {
+        "version": 1,
+        "fields": [
+          {
+            "key": "duration_second",
+            "label": "时长",
+            "type": "enum",
+            "control": "select",
+            "group": "output",
+            "order": 10,
+            "required": false,
+            "options": [
+              {
+                "value": 4,
+                "label": "4"
+              },
+              {
+                "value": 5,
+                "label": "5"
+              },
+              {
+                "value": 6,
+                "label": "6"
+              },
+              {
+                "value": 7,
+                "label": "7"
+              },
+              {
+                "value": 8,
+                "label": "8"
+              },
+              {
+                "value": 9,
+                "label": "9"
+              },
+              {
+                "value": 10,
+                "label": "10"
+              },
+              {
+                "value": 11,
+                "label": "11"
+              },
+              {
+                "value": 12,
+                "label": "12"
+              },
+              {
+                "value": 13,
+                "label": "13"
+              },
+              {
+                "value": 14,
+                "label": "14"
+              },
+              {
+                "value": 15,
+                "label": "15"
+              }
+            ],
+            "default": 5
+          },
+          {
+            "key": "aspect_ratio",
+            "label": "宽高比",
+            "type": "enum",
+            "control": "select",
+            "group": "output",
+            "order": 20,
+            "required": false,
+            "options": [
+              {
+                "value": "16:9",
+                "label": "16:9"
+              },
+              {
+                "value": "9:16",
+                "label": "9:16"
+              },
+              {
+                "value": "1:1",
+                "label": "1:1"
+              },
+              {
+                "value": "4:3",
+                "label": "4:3"
+              },
+              {
+                "value": "3:4",
+                "label": "3:4"
+              },
+              {
+                "value": "21:9",
+                "label": "21:9"
+              }
+            ],
+            "default": "16:9"
+          },
+          {
+            "key": "resolution",
+            "label": "分辨率",
+            "type": "enum",
+            "control": "select",
+            "group": "output",
+            "order": 30,
+            "required": false,
+            "options": [
+              {
+                "value": "768p",
+                "label": "768p"
+              },
+              {
+                "value": "2k",
+                "label": "2k"
+              }
+            ],
+            "default": "768p"
+          }
+        ]
+      },
+      "binding": {
+        "execution_modes": [
+          "async_task"
+        ],
+        "input_modalities": [
+          "text",
+          "image",
+          "audio",
+          "video"
+        ],
+        "output_modalities": [
+          "video"
+        ],
+        "input_adapter_key": "legacy-ai-model-runtime-v1",
+        "input_roles": [
+          "first_frame",
+          "last_frame",
+          "reference_image",
+          "reference_audio",
+          "reference_video"
+        ],
+        "input_contract": {
+          "version": 1,
+          "modalities": {
+            "image": {
+              "min_items": 0,
+              "max_items": 9
+            },
+            "audio": {
+              "min_items": 0,
+              "max_items": 3
+            },
+            "video": {
+              "min_items": 0,
+              "max_items": 3
+            }
+          },
+          "roles": {
+            "reference_video": {
+              "modality": "video",
+              "min_items": 0,
+              "max_items": 3
+            },
+            "reference_audio": {
+              "modality": "audio",
+              "min_items": 0,
+              "max_items": 3
+            },
+            "reference_image": {
+              "modality": "image",
+              "min_items": 0,
+              "max_items": 9
+            },
+            "first_frame": {
+              "modality": "image",
+              "min_items": 0,
+              "max_items": 1
+            },
+            "last_frame": {
+              "modality": "image",
+              "min_items": 0,
+              "max_items": 1
+            }
+          }
+        },
+        "features": [],
+        "usage_adapter_key": "current-video-generation-v1",
+        "billing_contract_key": "video-generation-input-output-v1",
+        "parameter_bindings": {
+          "version": 1,
+          "bindings": {
+            "aspect_ratio": {
+              "enabled": true,
+              "omit_when_empty": false,
+              "omit_when_false": false,
+              "path": "aspect_ratio",
+              "target": "operation_request",
+              "value_map": {}
+            },
+            "duration_second": {
+              "enabled": true,
+              "omit_when_empty": false,
+              "omit_when_false": false,
+              "path": "duration",
+              "target": "operation_request",
+              "value_map": {}
+            },
+            "resolution": {
+              "enabled": true,
+              "omit_when_empty": false,
+              "omit_when_false": false,
+              "path": "resolution",
+              "target": "operation_request",
+              "value_map": {}
+            }
+          }
+        }
+      },
+      "price_preset": {
+        "currency": "CNY",
+        "reviewed_on": "2026-11-06",
+        "label": "北京视频及参考素材价格",
+        "source_ref": "https://www.qianwenai.com/models/MiniMax%2FMiniMax-H3",
+        "billing_contract_key": "video-generation-input-output-v1",
+        "charges": [
+          {
+            "key": "input_image",
+            "meter": "input_image",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "0.20",
+                  "per": "1"
+                }
+              }
+            ]
+          },
+          {
+            "key": "output_second",
+            "meter": "output_second",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "0.80",
+                  "per": "1"
+                }
+              },
+              {
+                "name": "standard_768p",
+                "default": false,
+                "priority": 10,
+                "conditions": [
+                  {
+                    "field": "request.resolution",
+                    "operator": "eq",
+                    "value": "768p"
+                  }
+                ],
+                "rate": {
+                  "amount": "0.50",
+                  "per": "1"
+                }
+              }
+            ]
+          },
+          {
+            "key": "input_second",
+            "meter": "input_second",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "0.80",
+                  "per": "1"
+                }
+              },
+              {
+                "name": "standard_768p",
+                "default": false,
+                "priority": 10,
+                "conditions": [
+                  {
+                    "field": "request.resolution",
+                    "operator": "eq",
+                    "value": "768p"
+                  }
+                ],
+                "rate": {
+                  "amount": "0.50",
+                  "per": "1"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "provider_family": "bailian",
+      "model_key": "qwen-image-3.0-pro",
+      "display_name": "Qwen Image 3.0 Pro",
+      "operation_id": "image_generation",
+      "request_mode": "dashscope-images",
+      "parameter_schema": {
+        "version": 1,
+        "fields": [
+          {
+            "key": "size",
+            "label": "图片尺寸",
+            "type": "enum",
+            "control": "select",
+            "group": "generation",
+            "order": 0,
+            "required": false,
+            "options": [
+              {
+                "value": "1024x1024",
+                "label": "1024x1024"
+              },
+              {
+                "value": "1536x1024",
+                "label": "1536x1024"
+              },
+              {
+                "value": "1024x1536",
+                "label": "1024x1536"
+              },
+              {
+                "value": "2048x2048",
+                "label": "2048x2048"
+              }
+            ],
+            "default": "1024x1024"
+          }
+        ]
+      },
+      "binding": {
+        "execution_modes": [
+          "sync"
+        ],
+        "input_modalities": [
+          "text",
+          "image"
+        ],
+        "output_modalities": [
+          "image"
+        ],
+        "input_adapter_key": "legacy-ai-model-runtime-v1",
+        "input_roles": [
+          "reference_image"
+        ],
+        "input_contract": {
+          "version": 1,
+          "modalities": {
+            "image": {
+              "min_items": 0,
+              "max_items": 3
+            }
+          },
+          "roles": {
+            "reference_image": {
+              "modality": "image",
+              "min_items": 0,
+              "max_items": 3
+            }
+          }
+        },
+        "features": [],
+        "usage_adapter_key": "current-image-generation-v1",
+        "billing_contract_key": "image-input-output-v1",
+        "parameter_bindings": {
+          "version": 1,
+          "bindings": {
+            "size": {
+              "enabled": true,
+              "omit_when_empty": false,
+              "omit_when_false": false,
+              "path": "size",
+              "target": "operation_request",
+              "value_map": {}
+            }
+          }
+        }
+      },
+      "price_preset": {
+        "currency": "CNY",
+        "reviewed_on": "2026-11-06",
+        "label": "官方人民币原价",
+        "source_ref": "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "billing_contract_key": "image-input-output-v1",
+        "charges": [
+          {
+            "key": "input_image",
+            "meter": "input_image",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "0.02",
+                  "per": "1"
+                }
+              }
+            ]
+          },
+          {
+            "key": "output_image",
+            "meter": "output_image",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "0.5",
+                  "per": "1"
+                }
+              },
+              {
+                "name": "output_up_to_2250000_pixels",
+                "default": false,
+                "priority": 10,
+                "conditions": [
+                  {
+                    "field": "usage.output_image_pixels",
+                    "operator": "lte",
+                    "value": "2250000"
+                  }
+                ],
+                "rate": {
+                  "amount": "0.25",
+                  "per": "1"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "provider_family": "bailian",
+      "model_key": "qwen-image-3.0",
+      "display_name": "Qwen Image 3.0",
+      "operation_id": "image_generation",
+      "request_mode": "dashscope-images",
+      "parameter_schema": {
+        "version": 1,
+        "fields": [
+          {
+            "key": "size",
+            "label": "图片尺寸",
+            "type": "enum",
+            "control": "select",
+            "group": "generation",
+            "order": 0,
+            "required": false,
+            "options": [
+              {
+                "value": "1024x1024",
+                "label": "1024x1024"
+              },
+              {
+                "value": "1536x1024",
+                "label": "1536x1024"
+              },
+              {
+                "value": "1024x1536",
+                "label": "1024x1536"
+              },
+              {
+                "value": "2048x2048",
+                "label": "2048x2048"
+              }
+            ],
+            "default": "1024x1024"
+          }
+        ]
+      },
+      "binding": {
+        "execution_modes": [
+          "sync"
+        ],
+        "input_modalities": [
+          "text",
+          "image"
+        ],
+        "output_modalities": [
+          "image"
+        ],
+        "input_adapter_key": "legacy-ai-model-runtime-v1",
+        "input_roles": [
+          "reference_image"
+        ],
+        "input_contract": {
+          "version": 1,
+          "modalities": {
+            "image": {
+              "min_items": 0,
+              "max_items": 3
+            }
+          },
+          "roles": {
+            "reference_image": {
+              "modality": "image",
+              "min_items": 0,
+              "max_items": 3
+            }
+          }
+        },
+        "features": [],
+        "usage_adapter_key": "current-image-generation-v1",
+        "billing_contract_key": "image-input-output-v1",
+        "parameter_bindings": {
+          "version": 1,
+          "bindings": {
+            "size": {
+              "enabled": true,
+              "omit_when_empty": false,
+              "omit_when_false": false,
+              "path": "size",
+              "target": "operation_request",
+              "value_map": {}
+            }
+          }
+        }
+      },
+      "price_preset": {
+        "currency": "CNY",
+        "reviewed_on": "2026-11-06",
+        "label": "官方人民币原价",
+        "source_ref": "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "billing_contract_key": "image-input-output-v1",
+        "charges": [
+          {
+            "key": "input_image",
+            "meter": "input_image",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "0.02",
+                  "per": "1"
+                }
+              }
+            ]
+          },
+          {
+            "key": "output_image",
+            "meter": "output_image",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "0.18",
+                  "per": "1"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "provider_family": "bailian",
+      "model_key": "qwen-image-2.1-pro",
+      "display_name": "Qwen Image 2.1 Pro",
+      "operation_id": "image_generation",
+      "request_mode": "dashscope-images",
+      "parameter_schema": {
+        "version": 1,
+        "fields": [
+          {
+            "key": "size",
+            "label": "图片尺寸",
+            "type": "enum",
+            "control": "select",
+            "group": "generation",
+            "order": 0,
+            "required": false,
+            "options": [
+              {
+                "value": "1024x1024",
+                "label": "1024x1024"
+              },
+              {
+                "value": "1536x1024",
+                "label": "1536x1024"
+              },
+              {
+                "value": "1024x1536",
+                "label": "1024x1536"
+              }
+            ],
+            "default": "1024x1024"
+          }
+        ]
+      },
+      "binding": {
+        "execution_modes": [
+          "sync"
+        ],
+        "input_modalities": [
+          "text",
+          "image"
+        ],
+        "output_modalities": [
+          "image"
+        ],
+        "input_adapter_key": "legacy-ai-model-runtime-v1",
+        "input_roles": [
+          "reference_image"
+        ],
+        "input_contract": {
+          "version": 1,
+          "modalities": {
+            "image": {
+              "min_items": 0,
+              "max_items": 10
+            }
+          },
+          "roles": {
+            "reference_image": {
+              "modality": "image",
+              "min_items": 0,
+              "max_items": 10
+            }
+          }
+        },
+        "features": [],
+        "usage_adapter_key": "current-image-generation-v1",
+        "billing_contract_key": "image-generation-current-v1",
+        "parameter_bindings": {
+          "version": 1,
+          "bindings": {
+            "size": {
+              "enabled": true,
+              "omit_when_empty": false,
+              "omit_when_false": false,
+              "path": "size",
+              "target": "operation_request",
+              "value_map": {}
+            }
+          }
+        }
+      },
+      "price_preset": {
+        "currency": "CNY",
+        "reviewed_on": "2026-11-05",
+        "label": "官方人民币原价",
+        "source_ref": "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "billing_contract_key": "image-generation-current-v1",
+        "charges": [
+          {
+            "key": "output_image",
+            "meter": "output_image",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "0.25",
+                  "per": "1"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "provider_family": "bailian",
+      "model_key": "qwen-image-2.1-turbo",
+      "display_name": "Qwen Image 2.1 Turbo",
+      "operation_id": "image_generation",
+      "request_mode": "dashscope-images",
+      "parameter_schema": {
+        "version": 1,
+        "fields": [
+          {
+            "key": "size",
+            "label": "图片尺寸",
+            "type": "enum",
+            "control": "select",
+            "group": "generation",
+            "order": 0,
+            "required": false,
+            "options": [
+              {
+                "value": "1024x1024",
+                "label": "1024x1024"
+              },
+              {
+                "value": "1536x1024",
+                "label": "1536x1024"
+              },
+              {
+                "value": "1024x1536",
+                "label": "1024x1536"
+              }
+            ],
+            "default": "1024x1024"
+          }
+        ]
+      },
+      "binding": {
+        "execution_modes": [
+          "sync"
+        ],
+        "input_modalities": [
+          "text",
+          "image"
+        ],
+        "output_modalities": [
+          "image"
+        ],
+        "input_adapter_key": "legacy-ai-model-runtime-v1",
+        "input_roles": [
+          "reference_image"
+        ],
+        "input_contract": {
+          "version": 1,
+          "modalities": {
+            "image": {
+              "min_items": 0,
+              "max_items": 10
+            }
+          },
+          "roles": {
+            "reference_image": {
+              "modality": "image",
+              "min_items": 0,
+              "max_items": 10
+            }
+          }
+        },
+        "features": [],
+        "usage_adapter_key": "current-image-generation-v1",
+        "billing_contract_key": "image-generation-current-v1",
+        "parameter_bindings": {
+          "version": 1,
+          "bindings": {
+            "size": {
+              "enabled": true,
+              "omit_when_empty": false,
+              "omit_when_false": false,
+              "path": "size",
+              "target": "operation_request",
+              "value_map": {}
+            }
+          }
+        }
+      },
+      "price_preset": {
+        "currency": "CNY",
+        "reviewed_on": "2026-11-05",
+        "label": "官方人民币原价",
+        "source_ref": "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "billing_contract_key": "image-generation-current-v1",
+        "charges": [
+          {
+            "key": "output_image",
+            "meter": "output_image",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "0.1",
+                  "per": "1"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "provider_family": "bailian",
+      "model_key": "qwen3.8-max",
+      "display_name": "Qwen 3.8 Max",
+      "operation_id": "conversation_generation",
+      "request_mode": "openai-chat",
+      "parameter_schema": {
+        "version": 1,
+        "fields": [
+          {
+            "key": "max_tokens",
+            "label": "最大完整输出 token（含思考）",
+            "type": "integer",
+            "control": "number",
+            "group": "generation",
+            "order": 0,
+            "required": false,
+            "default": 512,
+            "min": 1,
+            "max": 4096
+          },
+          {
+            "key": "enable_thinking",
+            "label": "深度思考",
+            "type": "boolean",
+            "control": "toggle",
+            "group": "generation",
+            "order": 1,
+            "required": false,
+            "default": true
+          }
+        ]
+      },
+      "binding": {
+        "execution_modes": [
+          "stream",
+          "sync"
+        ],
+        "input_modalities": [
+          "text",
+          "image"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "input_adapter_key": "legacy-ai-model-runtime-v1",
+        "input_roles": [],
+        "input_contract": {
+          "version": 1,
+          "modalities": {
+            "image": {
+              "min_items": 0,
+              "max_items": 2048
+            }
+          },
+          "roles": {}
+        },
+        "features": [
+          "reasoning"
+        ],
+        "usage_adapter_key": "openai-compatible-text-v1",
+        "billing_contract_key": "text-token-cache-split-v1",
+        "parameter_bindings": {
+          "version": 1,
+          "bindings": {
+            "enable_thinking": {
+              "enabled": true,
+              "omit_when_empty": false,
+              "omit_when_false": false,
+              "path": "enable_thinking",
+              "target": "provider_body",
+              "value_map": {}
+            },
+            "max_tokens": {
+              "enabled": true,
+              "omit_when_empty": false,
+              "omit_when_false": false,
+              "path": "max_completion_tokens",
+              "target": "provider_body",
+              "value_map": {}
+            }
+          }
+        }
+      },
+      "price_preset": {
+        "currency": "CNY",
+        "reviewed_on": "2026-11-05",
+        "label": "官方人民币原价（隐式缓存）",
+        "source_ref": "https://www.qianwenai.com/models/qwen3.8-max",
+        "billing_contract_key": "text-token-cache-split-v1",
+        "charges": [
+          {
+            "key": "cache_read_input_token",
+            "meter": "cache_read_input_token",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "1.5",
+                  "per": "1000000"
+                }
+              }
+            ]
+          },
+          {
+            "key": "input_token_uncached",
+            "meter": "input_token_uncached",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "12",
+                  "per": "1000000"
+                }
+              }
+            ]
+          },
+          {
+            "key": "output_token",
+            "meter": "output_token",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "36",
+                  "per": "1000000"
+                }
+              }
+            ]
+          }
+        ],
+        "missing_cache_write": "ordinary_input_if_unreported"
+      }
+    },
+    {
+      "provider_family": "bailian",
+      "model_key": "qwen3.7-plus",
+      "display_name": "Qwen 3.7 Plus",
+      "operation_id": "conversation_generation",
+      "request_mode": "openai-chat",
+      "parameter_schema": {
+        "version": 1,
+        "fields": [
+          {
+            "key": "max_tokens",
+            "label": "最大完整输出 token（含思考）",
+            "type": "integer",
+            "control": "number",
+            "group": "generation",
+            "order": 0,
+            "required": false,
+            "default": 512,
+            "min": 1,
+            "max": 4096
+          },
+          {
+            "key": "enable_thinking",
+            "label": "深度思考",
+            "type": "boolean",
+            "control": "toggle",
+            "group": "generation",
+            "order": 1,
+            "required": false,
+            "default": false
+          }
+        ]
+      },
+      "binding": {
+        "execution_modes": [
+          "stream",
+          "sync"
+        ],
+        "input_modalities": [
+          "text",
+          "image"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "input_adapter_key": "legacy-ai-model-runtime-v1",
+        "input_roles": [],
+        "input_contract": {
+          "version": 1,
+          "modalities": {
+            "image": {
+              "min_items": 0,
+              "max_items": 2048
+            }
+          },
+          "roles": {}
+        },
+        "features": [
+          "reasoning"
+        ],
+        "usage_adapter_key": "openai-compatible-text-v1",
+        "billing_contract_key": "text-token-cache-split-v1",
+        "parameter_bindings": {
+          "version": 1,
+          "bindings": {
+            "enable_thinking": {
+              "enabled": true,
+              "omit_when_empty": false,
+              "omit_when_false": false,
+              "path": "enable_thinking",
+              "target": "provider_body",
+              "value_map": {}
+            },
+            "max_tokens": {
+              "enabled": true,
+              "omit_when_empty": false,
+              "omit_when_false": false,
+              "path": "max_completion_tokens",
+              "target": "provider_body",
+              "value_map": {}
+            }
+          }
+        }
+      },
+      "price_preset": {
+        "currency": "CNY",
+        "reviewed_on": "2026-11-05",
+        "label": "官方人民币原价（隐式缓存）",
+        "source_ref": "https://www.qianwenai.com/models/qwen3.7-plus",
+        "billing_contract_key": "text-token-cache-split-v1",
+        "charges": [
+          {
+            "key": "cache_read_input_token",
+            "meter": "cache_read_input_token",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "1.2",
+                  "per": "1000000"
+                }
+              },
+              {
+                "name": "input_up_to_256k",
+                "default": false,
+                "priority": 10,
+                "conditions": [
+                  {
+                    "field": "usage.input_token_total",
+                    "operator": "lte",
+                    "value": "256000"
+                  }
+                ],
+                "rate": {
+                  "amount": "0.4",
+                  "per": "1000000"
+                }
+              }
+            ]
+          },
+          {
+            "key": "input_token_uncached",
+            "meter": "input_token_uncached",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "6",
+                  "per": "1000000"
+                }
+              },
+              {
+                "name": "input_up_to_256k",
+                "default": false,
+                "priority": 10,
+                "conditions": [
+                  {
+                    "field": "usage.input_token_total",
+                    "operator": "lte",
+                    "value": "256000"
+                  }
+                ],
+                "rate": {
+                  "amount": "2",
+                  "per": "1000000"
+                }
+              }
+            ]
+          },
+          {
+            "key": "output_token",
+            "meter": "output_token",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "24",
+                  "per": "1000000"
+                }
+              },
+              {
+                "name": "input_up_to_256k",
+                "default": false,
+                "priority": 10,
+                "conditions": [
+                  {
+                    "field": "usage.input_token_total",
+                    "operator": "lte",
+                    "value": "256000"
+                  }
+                ],
+                "rate": {
+                  "amount": "8",
+                  "per": "1000000"
+                }
+              }
+            ]
+          }
+        ],
+        "missing_cache_write": "ordinary_input_if_unreported"
+      }
+    },
+    {
+      "provider_family": "minimax",
+      "model_key": "speech-2.8-hd",
+      "display_name": "Speech 2.8 HD",
+      "operation_id": "speech_synthesis",
+      "request_mode": "minimax-tts",
+      "parameter_schema": {
+        "version": 1,
+        "fields": [
+          {
+            "key": "voice",
+            "label": "音色",
+            "type": "enum",
+            "control": "select",
+            "group": "generation",
+            "order": 10,
+            "required": false,
+            "options_source": {
+              "kind": "resource_ref",
+              "resource_ref": "provider_voice",
+              "max_options": 64
+            }
+          },
+          {
+            "key": "format",
+            "label": "格式",
+            "type": "enum",
+            "control": "select",
+            "group": "generation",
+            "order": 20,
+            "required": false,
+            "options": [
+              {
+                "value": "mp3",
+                "label": "mp3"
+              },
+              {
+                "value": "wav",
+                "label": "wav"
+              }
+            ],
+            "default": "mp3"
+          },
+          {
+            "key": "speed",
+            "label": "语速",
+            "type": "number",
+            "control": "slider",
+            "group": "generation",
+            "order": 30,
+            "required": false,
+            "default": 1.0,
+            "min": 0.25,
+            "max": 4.0
+          }
+        ]
+      },
+      "binding": {
+        "execution_modes": [
+          "sync"
+        ],
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "audio"
+        ],
+        "input_adapter_key": "legacy-ai-model-runtime-v1",
+        "input_roles": [],
+        "input_contract": {
+          "version": 1,
+          "modalities": {
+            "text": {
+              "max_chars": 3000
+            }
+          },
+          "roles": {}
+        },
+        "features": [],
+        "usage_adapter_key": "minimax-tts-usage-v1",
+        "billing_contract_key": "audio-tts-current-v1",
+        "parameter_bindings": {
+          "version": 1,
+          "bindings": {
+            "format": {
+              "enabled": true,
+              "omit_when_empty": false,
+              "omit_when_false": false,
+              "path": "format",
+              "target": "operation_request",
+              "value_map": {}
+            },
+            "speed": {
+              "enabled": true,
+              "omit_when_empty": false,
+              "omit_when_false": false,
+              "path": "speed",
+              "target": "operation_request",
+              "value_map": {}
+            },
+            "voice": {
+              "enabled": true,
+              "omit_when_empty": false,
+              "omit_when_false": false,
+              "path": "voice",
+              "target": "operation_request",
+              "value_map": {}
+            }
+          }
+        }
+      },
+      "price_preset": {
+        "currency": "CNY",
+        "reviewed_on": "2026-11-06",
+        "label": "MiniMax 国内同步语音合成原价",
+        "source_ref": "https://platform.minimax.cn/docs/pricing/overview",
+        "billing_contract_key": "audio-tts-current-v1",
+        "charges": [
+          {
+            "key": "input_character",
+            "meter": "input_character",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "3.50",
+                  "per": "10000"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "provider_family": "minimax",
+      "model_key": "speech-2.8-turbo",
+      "display_name": "Speech 2.8 Turbo",
+      "operation_id": "speech_synthesis",
+      "request_mode": "minimax-tts",
+      "parameter_schema": {
+        "version": 1,
+        "fields": [
+          {
+            "key": "voice",
+            "label": "音色",
+            "type": "enum",
+            "control": "select",
+            "group": "generation",
+            "order": 10,
+            "required": false,
+            "options_source": {
+              "kind": "resource_ref",
+              "resource_ref": "provider_voice",
+              "max_options": 64
+            }
+          },
+          {
+            "key": "format",
+            "label": "格式",
+            "type": "enum",
+            "control": "select",
+            "group": "generation",
+            "order": 20,
+            "required": false,
+            "options": [
+              {
+                "value": "mp3",
+                "label": "mp3"
+              },
+              {
+                "value": "wav",
+                "label": "wav"
+              }
+            ],
+            "default": "mp3"
+          },
+          {
+            "key": "speed",
+            "label": "语速",
+            "type": "number",
+            "control": "slider",
+            "group": "generation",
+            "order": 30,
+            "required": false,
+            "default": 1.0,
+            "min": 0.25,
+            "max": 4.0
+          }
+        ]
+      },
+      "binding": {
+        "execution_modes": [
+          "sync"
+        ],
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "audio"
+        ],
+        "input_adapter_key": "legacy-ai-model-runtime-v1",
+        "input_roles": [],
+        "input_contract": {
+          "version": 1,
+          "modalities": {
+            "text": {
+              "max_chars": 3000
+            }
+          },
+          "roles": {}
+        },
+        "features": [],
+        "usage_adapter_key": "minimax-tts-usage-v1",
+        "billing_contract_key": "audio-tts-current-v1",
+        "parameter_bindings": {
+          "version": 1,
+          "bindings": {
+            "format": {
+              "enabled": true,
+              "omit_when_empty": false,
+              "omit_when_false": false,
+              "path": "format",
+              "target": "operation_request",
+              "value_map": {}
+            },
+            "speed": {
+              "enabled": true,
+              "omit_when_empty": false,
+              "omit_when_false": false,
+              "path": "speed",
+              "target": "operation_request",
+              "value_map": {}
+            },
+            "voice": {
+              "enabled": true,
+              "omit_when_empty": false,
+              "omit_when_false": false,
+              "path": "voice",
+              "target": "operation_request",
+              "value_map": {}
+            }
+          }
+        }
+      },
+      "price_preset": {
+        "currency": "CNY",
+        "reviewed_on": "2026-11-06",
+        "label": "MiniMax 国内同步语音合成原价",
+        "source_ref": "https://platform.minimax.cn/docs/pricing/overview",
+        "billing_contract_key": "audio-tts-current-v1",
+        "charges": [
+          {
+            "key": "input_character",
+            "meter": "input_character",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "2.00",
+                  "per": "10000"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "provider_family": "minimax",
+      "model_key": "minimax-voice-clone",
+      "display_name": "MiniMax 快速复刻",
+      "operation_id": "voice_clone",
+      "request_mode": "minimax-voice-clone",
+      "parameter_schema": {
+        "version": 1,
+        "fields": []
+      },
+      "binding": {
+        "execution_modes": [
+          "sync"
+        ],
+        "input_modalities": [
+          "audio"
+        ],
+        "output_modalities": [
+          "voice_resource"
+        ],
+        "input_adapter_key": "voice-source-v1",
+        "input_roles": [
+          "source_audio"
+        ],
+        "input_contract": {
+          "version": 1,
+          "modalities": {
+            "audio": {
+              "min_items": 1,
+              "max_items": 1
+            }
+          },
+          "roles": {
+            "source_audio": {
+              "modality": "audio",
+              "min_items": 1,
+              "max_items": 1
+            }
+          }
+        },
+        "features": [],
+        "usage_adapter_key": "voice-resource-create-v1",
+        "billing_contract_key": "voice-resource-create-v1",
+        "parameter_bindings": {
+          "version": 1,
+          "bindings": {}
+        }
+      }
+    },
+    {
+      "provider_family": "deepseek",
+      "model_key": "deepseek-flash",
+      "display_name": "DeepSeek Flash",
+      "operation_id": "conversation_generation",
+      "request_mode": "openai-chat",
+      "parameter_schema": {
+        "version": 1,
+        "fields": [
+          {
+            "key": "max_tokens",
+            "label": "最大完整输出 token（含思考）",
+            "type": "integer",
+            "control": "number",
+            "group": "generation",
+            "order": 0,
+            "required": false,
+            "default": 512,
+            "min": 1,
+            "max": 4096
+          },
+          {
+            "key": "reasoning_effort",
+            "label": "思考强度",
+            "type": "enum",
+            "control": "select",
+            "group": "generation",
+            "order": 1,
+            "required": false,
+            "options": [
+              {
+                "value": "none",
+                "label": "关闭思考"
+              },
+              {
+                "value": "low",
+                "label": "低"
+              },
+              {
+                "value": "high",
+                "label": "高"
+              },
+              {
+                "value": "max",
+                "label": "最高"
+              }
+            ],
+            "default": "none"
+          }
+        ]
+      },
+      "binding": {
+        "execution_modes": [
+          "stream",
+          "sync"
+        ],
+        "input_modalities": [
+          "text",
+          "image"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "input_adapter_key": "legacy-ai-model-runtime-v1",
+        "input_roles": [],
+        "input_contract": {
+          "version": 1,
+          "modalities": {
+            "image": {
+              "min_items": 0,
+              "max_items": 600
+            }
+          },
+          "roles": {}
+        },
+        "features": [
+          "reasoning"
+        ],
+        "usage_adapter_key": "openai-compatible-text-v1",
+        "billing_contract_key": "text-token-cache-split-v1",
+        "parameter_bindings": {
+          "version": 1,
+          "bindings": {
+            "max_tokens": {
+              "enabled": true,
+              "omit_when_empty": false,
+              "omit_when_false": false,
+              "path": "max_tokens",
+              "target": "provider_body",
+              "value_map": {}
+            },
+            "reasoning_effort": {
+              "enabled": true,
+              "omit_when_empty": false,
+              "omit_when_false": false,
+              "path": "reasoning_effort",
+              "target": "provider_body",
+              "value_map": {}
+            }
+          }
+        }
+      },
+      "price_preset": {
+        "currency": "CNY",
+        "reviewed_on": "2026-11-05",
+        "label": "Official peak price",
+        "source_ref": "https://api-docs.deepseek.com/zh-cn/quick_start/pricing/",
+        "billing_contract_key": "text-token-cache-split-v1",
+        "charges": [
+          {
+            "key": "cache_read_input_token",
+            "meter": "cache_read_input_token",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "0.04",
+                  "per": "1000000"
+                }
+              }
+            ]
+          },
+          {
+            "key": "input_token_uncached",
+            "meter": "input_token_uncached",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "2",
+                  "per": "1000000"
+                }
+              }
+            ]
+          },
+          {
+            "key": "output_token",
+            "meter": "output_token",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "8",
+                  "per": "1000000"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "provider_family": "deepseek",
+      "model_key": "deepseek-v4-pro",
+      "display_name": "DeepSeek V4 Pro",
+      "operation_id": "conversation_generation",
+      "request_mode": "openai-chat",
+      "parameter_schema": {
+        "version": 1,
+        "fields": [
+          {
+            "key": "max_tokens",
+            "label": "最大完整输出 token（含思考）",
+            "type": "integer",
+            "control": "number",
+            "group": "generation",
+            "order": 0,
+            "required": false,
+            "default": 512,
+            "min": 1,
+            "max": 4096
+          },
+          {
+            "key": "reasoning_effort",
+            "label": "思考强度",
+            "type": "enum",
+            "control": "select",
+            "group": "generation",
+            "order": 1,
+            "required": false,
+            "options": [
+              {
+                "value": "none",
+                "label": "关闭思考"
+              },
+              {
+                "value": "low",
+                "label": "低"
+              },
+              {
+                "value": "high",
+                "label": "高"
+              },
+              {
+                "value": "max",
+                "label": "最高"
+              }
+            ],
+            "default": "high"
+          }
+        ]
+      },
+      "binding": {
+        "execution_modes": [
+          "stream",
+          "sync"
+        ],
+        "input_modalities": [
+          "text"
+        ],
+        "output_modalities": [
+          "text"
+        ],
+        "input_adapter_key": "legacy-ai-model-runtime-v1",
+        "input_roles": [],
+        "input_contract": {},
+        "features": [
+          "reasoning"
+        ],
+        "usage_adapter_key": "openai-compatible-text-v1",
+        "billing_contract_key": "text-token-cache-split-v1",
+        "parameter_bindings": {
+          "version": 1,
+          "bindings": {
+            "max_tokens": {
+              "enabled": true,
+              "omit_when_empty": false,
+              "omit_when_false": false,
+              "path": "max_tokens",
+              "target": "provider_body",
+              "value_map": {}
+            },
+            "reasoning_effort": {
+              "enabled": true,
+              "omit_when_empty": false,
+              "omit_when_false": false,
+              "path": "reasoning_effort",
+              "target": "provider_body",
+              "value_map": {}
+            }
+          }
+        }
+      },
+      "price_preset": {
+        "currency": "CNY",
+        "reviewed_on": "2026-11-05",
+        "label": "Official peak price",
+        "source_ref": "https://api-docs.deepseek.com/zh-cn/quick_start/pricing/",
+        "billing_contract_key": "text-token-cache-split-v1",
+        "charges": [
+          {
+            "key": "cache_read_input_token",
+            "meter": "cache_read_input_token",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "0.30",
+                  "per": "1000000"
+                }
+              }
+            ]
+          },
+          {
+            "key": "input_token_uncached",
+            "meter": "input_token_uncached",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "9.0",
+                  "per": "1000000"
+                }
+              }
+            ]
+          },
+          {
+            "key": "output_token",
+            "meter": "output_token",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "27.0",
+                  "per": "1000000"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

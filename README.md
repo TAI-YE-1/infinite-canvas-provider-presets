@@ -21,3 +21,7 @@ maintainer's offline Ed25519 key. Increase sequence monotonically, preserve immu
 review official model/API/pricing changes, and replace the three stable files in one commit.
 Renew before the manifest expires; expired packages are rejected while installed configuration is preserved.
 Never put the signing private key in Git or in provider configuration.
+
+Format 2 (sequence 2) includes 13 signed CNY request-price references alongside the 14 model configurations. References use reviewed official peak/list prices, with editable drafts and existing V3 billing contracts. Existing builtin-installed models can use new reference data; unknown model IDs need no catalog code change when their protocol and billing contracts are already supported. Refreshing data does not change runtime configuration, publish prices, open models or charge wallets. Existing selling prices require explicit administrator confirmation and publication before changing.
+
+Applications must support package format 2 to read price references. Older applications reject the new format and retain installed configuration; the immutable format-1 release remains available under releases/2026-11-07.1/. The unsigned catalog-reference.json remains a human reference, not a trusted client update payload. MiniMax voice-clone lifecycle fees remain separate from request-price references.

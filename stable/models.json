@@ -1,7 +1,7 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "package_id": "mainstream-platforms",
-  "sequence": 1,
+  "sequence": 2,
   "templates": [
     {
       "provider_family": "volcengine",
@@ -167,6 +167,49 @@
             }
           }
         }
+      },
+      "price_preset": {
+        "currency": "CNY",
+        "reviewed_on": "2026-11-06",
+        "label": "火山方舟 720p 在线刊例价",
+        "source_ref": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh&redirect=1",
+        "billing_contract_key": "video-generation-token-v1",
+        "charges": [
+          {
+            "key": "output_token",
+            "meter": "output_token",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "70",
+                  "per": "1000000"
+                }
+              },
+              {
+                "name": "reference_video",
+                "default": false,
+                "priority": 10,
+                "conditions": [
+                  {
+                    "field": "request.reference_video_present",
+                    "operator": "eq",
+                    "value": "true"
+                  }
+                ],
+                "rate": {
+                  "amount": "42",
+                  "per": "1000000"
+                }
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -217,6 +260,67 @@
           "version": 1,
           "bindings": {}
         }
+      },
+      "price_preset": {
+        "currency": "CNY",
+        "reviewed_on": "2026-11-06",
+        "label": "火山方舟单图刊例价",
+        "source_ref": "https://docs.volcengine.com/docs/ark/model-pricing?lang=zh",
+        "billing_contract_key": "image-input-output-v1",
+        "charges": [
+          {
+            "key": "input_image",
+            "meter": "input_image",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "0.02",
+                  "per": "1"
+                }
+              }
+            ]
+          },
+          {
+            "key": "output_image",
+            "meter": "output_image",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "0.60",
+                  "per": "1"
+                }
+              },
+              {
+                "name": "up_to_2610000_pixels",
+                "default": false,
+                "priority": 10,
+                "conditions": [
+                  {
+                    "field": "usage.output_image_pixels",
+                    "operator": "lte",
+                    "value": "2610000"
+                  }
+                ],
+                "rate": {
+                  "amount": "0.30",
+                  "per": "1"
+                }
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -443,6 +547,101 @@
             }
           }
         }
+      },
+      "price_preset": {
+        "currency": "CNY",
+        "reviewed_on": "2026-11-06",
+        "label": "北京视频及参考素材价格",
+        "source_ref": "https://www.qianwenai.com/models/MiniMax%2FMiniMax-H3",
+        "billing_contract_key": "video-generation-input-output-v1",
+        "charges": [
+          {
+            "key": "input_image",
+            "meter": "input_image",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "0.20",
+                  "per": "1"
+                }
+              }
+            ]
+          },
+          {
+            "key": "output_second",
+            "meter": "output_second",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "0.80",
+                  "per": "1"
+                }
+              },
+              {
+                "name": "standard_768p",
+                "default": false,
+                "priority": 10,
+                "conditions": [
+                  {
+                    "field": "request.resolution",
+                    "operator": "eq",
+                    "value": "768p"
+                  }
+                ],
+                "rate": {
+                  "amount": "0.50",
+                  "per": "1"
+                }
+              }
+            ]
+          },
+          {
+            "key": "input_second",
+            "meter": "input_second",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "0.80",
+                  "per": "1"
+                }
+              },
+              {
+                "name": "standard_768p",
+                "default": false,
+                "priority": 10,
+                "conditions": [
+                  {
+                    "field": "request.resolution",
+                    "operator": "eq",
+                    "value": "768p"
+                  }
+                ],
+                "rate": {
+                  "amount": "0.50",
+                  "per": "1"
+                }
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -531,6 +730,67 @@
             }
           }
         }
+      },
+      "price_preset": {
+        "currency": "CNY",
+        "reviewed_on": "2026-11-06",
+        "label": "官方人民币原价",
+        "source_ref": "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "billing_contract_key": "image-input-output-v1",
+        "charges": [
+          {
+            "key": "input_image",
+            "meter": "input_image",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "0.02",
+                  "per": "1"
+                }
+              }
+            ]
+          },
+          {
+            "key": "output_image",
+            "meter": "output_image",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "0.5",
+                  "per": "1"
+                }
+              },
+              {
+                "name": "output_up_to_2250000_pixels",
+                "default": false,
+                "priority": 10,
+                "conditions": [
+                  {
+                    "field": "usage.output_image_pixels",
+                    "operator": "lte",
+                    "value": "2250000"
+                  }
+                ],
+                "rate": {
+                  "amount": "0.25",
+                  "per": "1"
+                }
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -619,6 +879,51 @@
             }
           }
         }
+      },
+      "price_preset": {
+        "currency": "CNY",
+        "reviewed_on": "2026-11-06",
+        "label": "官方人民币原价",
+        "source_ref": "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "billing_contract_key": "image-input-output-v1",
+        "charges": [
+          {
+            "key": "input_image",
+            "meter": "input_image",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "0.02",
+                  "per": "1"
+                }
+              }
+            ]
+          },
+          {
+            "key": "output_image",
+            "meter": "output_image",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "0.18",
+                  "per": "1"
+                }
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -703,6 +1008,33 @@
             }
           }
         }
+      },
+      "price_preset": {
+        "currency": "CNY",
+        "reviewed_on": "2026-11-05",
+        "label": "官方人民币原价",
+        "source_ref": "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "billing_contract_key": "image-generation-current-v1",
+        "charges": [
+          {
+            "key": "output_image",
+            "meter": "output_image",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "0.25",
+                  "per": "1"
+                }
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -787,6 +1119,33 @@
             }
           }
         }
+      },
+      "price_preset": {
+        "currency": "CNY",
+        "reviewed_on": "2026-11-05",
+        "label": "官方人民币原价",
+        "source_ref": "https://help.aliyun.com/zh/model-studio/model-pricing",
+        "billing_contract_key": "image-generation-current-v1",
+        "charges": [
+          {
+            "key": "output_image",
+            "meter": "output_image",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "0.1",
+                  "per": "1"
+                }
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -872,6 +1231,70 @@
             }
           }
         }
+      },
+      "price_preset": {
+        "currency": "CNY",
+        "reviewed_on": "2026-11-05",
+        "label": "官方人民币原价（隐式缓存）",
+        "source_ref": "https://www.qianwenai.com/models/qwen3.8-max",
+        "billing_contract_key": "text-token-cache-split-v1",
+        "charges": [
+          {
+            "key": "cache_read_input_token",
+            "meter": "cache_read_input_token",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "1.5",
+                  "per": "1000000"
+                }
+              }
+            ]
+          },
+          {
+            "key": "input_token_uncached",
+            "meter": "input_token_uncached",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "12",
+                  "per": "1000000"
+                }
+              }
+            ]
+          },
+          {
+            "key": "output_token",
+            "meter": "output_token",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "36",
+                  "per": "1000000"
+                }
+              }
+            ]
+          }
+        ],
+        "missing_cache_write": "ordinary_input_if_unreported"
       }
     },
     {
@@ -957,6 +1380,118 @@
             }
           }
         }
+      },
+      "price_preset": {
+        "currency": "CNY",
+        "reviewed_on": "2026-11-05",
+        "label": "官方人民币原价（隐式缓存）",
+        "source_ref": "https://www.qianwenai.com/models/qwen3.7-plus",
+        "billing_contract_key": "text-token-cache-split-v1",
+        "charges": [
+          {
+            "key": "cache_read_input_token",
+            "meter": "cache_read_input_token",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "1.2",
+                  "per": "1000000"
+                }
+              },
+              {
+                "name": "input_up_to_256k",
+                "default": false,
+                "priority": 10,
+                "conditions": [
+                  {
+                    "field": "usage.input_token_total",
+                    "operator": "lte",
+                    "value": "256000"
+                  }
+                ],
+                "rate": {
+                  "amount": "0.4",
+                  "per": "1000000"
+                }
+              }
+            ]
+          },
+          {
+            "key": "input_token_uncached",
+            "meter": "input_token_uncached",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "6",
+                  "per": "1000000"
+                }
+              },
+              {
+                "name": "input_up_to_256k",
+                "default": false,
+                "priority": 10,
+                "conditions": [
+                  {
+                    "field": "usage.input_token_total",
+                    "operator": "lte",
+                    "value": "256000"
+                  }
+                ],
+                "rate": {
+                  "amount": "2",
+                  "per": "1000000"
+                }
+              }
+            ]
+          },
+          {
+            "key": "output_token",
+            "meter": "output_token",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "24",
+                  "per": "1000000"
+                }
+              },
+              {
+                "name": "input_up_to_256k",
+                "default": false,
+                "priority": 10,
+                "conditions": [
+                  {
+                    "field": "usage.input_token_total",
+                    "operator": "lte",
+                    "value": "256000"
+                  }
+                ],
+                "rate": {
+                  "amount": "8",
+                  "per": "1000000"
+                }
+              }
+            ]
+          }
+        ],
+        "missing_cache_write": "ordinary_input_if_unreported"
       }
     },
     {
@@ -1069,6 +1604,33 @@
             }
           }
         }
+      },
+      "price_preset": {
+        "currency": "CNY",
+        "reviewed_on": "2026-11-06",
+        "label": "MiniMax 国内同步语音合成原价",
+        "source_ref": "https://platform.minimax.cn/docs/pricing/overview",
+        "billing_contract_key": "audio-tts-current-v1",
+        "charges": [
+          {
+            "key": "input_character",
+            "meter": "input_character",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "3.50",
+                  "per": "10000"
+                }
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -1181,6 +1743,33 @@
             }
           }
         }
+      },
+      "price_preset": {
+        "currency": "CNY",
+        "reviewed_on": "2026-11-06",
+        "label": "MiniMax 国内同步语音合成原价",
+        "source_ref": "https://platform.minimax.cn/docs/pricing/overview",
+        "billing_contract_key": "audio-tts-current-v1",
+        "charges": [
+          {
+            "key": "input_character",
+            "meter": "input_character",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "2.00",
+                  "per": "10000"
+                }
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -1333,6 +1922,69 @@
             }
           }
         }
+      },
+      "price_preset": {
+        "currency": "CNY",
+        "reviewed_on": "2026-11-05",
+        "label": "Official peak price",
+        "source_ref": "https://api-docs.deepseek.com/zh-cn/quick_start/pricing/",
+        "billing_contract_key": "text-token-cache-split-v1",
+        "charges": [
+          {
+            "key": "cache_read_input_token",
+            "meter": "cache_read_input_token",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "0.04",
+                  "per": "1000000"
+                }
+              }
+            ]
+          },
+          {
+            "key": "input_token_uncached",
+            "meter": "input_token_uncached",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "2",
+                  "per": "1000000"
+                }
+              }
+            ]
+          },
+          {
+            "key": "output_token",
+            "meter": "output_token",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "8",
+                  "per": "1000000"
+                }
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -1426,6 +2078,69 @@
             }
           }
         }
+      },
+      "price_preset": {
+        "currency": "CNY",
+        "reviewed_on": "2026-11-05",
+        "label": "Official peak price",
+        "source_ref": "https://api-docs.deepseek.com/zh-cn/quick_start/pricing/",
+        "billing_contract_key": "text-token-cache-split-v1",
+        "charges": [
+          {
+            "key": "cache_read_input_token",
+            "meter": "cache_read_input_token",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "0.30",
+                  "per": "1000000"
+                }
+              }
+            ]
+          },
+          {
+            "key": "input_token_uncached",
+            "meter": "input_token_uncached",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "9.0",
+                  "per": "1000000"
+                }
+              }
+            ]
+          },
+          {
+            "key": "output_token",
+            "meter": "output_token",
+            "scope": "request",
+            "charge_model": "linear",
+            "rate_tiers": [
+              {
+                "name": "default",
+                "default": true,
+                "priority": 0,
+                "conditions": [],
+                "rate": {
+                  "amount": "27.0",
+                  "per": "1000000"
+                }
+              }
+            ]
+          }
+        ]
       }
     }
   ]
