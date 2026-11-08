@@ -281,7 +281,7 @@
           "display_name": "Qwen Image 3.0 Pro",
           "purpose": "文字生图与参考图修改",
           "operation_id": "image_generation",
-          "request_mode": "dashscope-images",
+          "request_mode": "dashscope-native-images",
           "source_url": "https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference",
           "reviewed_on": "2026-11-06",
           "settings": {
@@ -408,7 +408,7 @@
           "display_name": "Qwen Image 3.0",
           "purpose": "文字生图与参考图修改",
           "operation_id": "image_generation",
-          "request_mode": "dashscope-images",
+          "request_mode": "dashscope-native-images",
           "source_url": "https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference",
           "reviewed_on": "2026-11-06",
           "settings": {
@@ -519,7 +519,7 @@
           "display_name": "Qwen Image 2.1 Pro",
           "purpose": "文字生图与参考图修改",
           "operation_id": "image_generation",
-          "request_mode": "dashscope-images",
+          "request_mode": "dashscope-native-images",
           "source_url": "https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference",
           "reviewed_on": "2026-11-05",
           "settings": {
@@ -610,7 +610,7 @@
           "display_name": "Qwen Image 2.1 Turbo",
           "purpose": "文字生图与参考图修改",
           "operation_id": "image_generation",
-          "request_mode": "dashscope-images",
+          "request_mode": "dashscope-native-images",
           "source_url": "https://help.aliyun.com/zh/model-studio/qwen-image-generation-and-editing-api-reference",
           "reviewed_on": "2026-11-05",
           "settings": {

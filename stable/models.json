@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "package_id": "mainstream-platforms",
-  "sequence": 3,
+  "sequence": 4,
   "templates": [
     {
       "provider_family": "volcengine",
@@ -683,7 +683,7 @@
       "model_key": "qwen-image-3.0-pro",
       "display_name": "Qwen Image 3.0 Pro",
       "operation_id": "image_generation",
-      "request_mode": "dashscope-images",
+      "request_mode": "dashscope-native-images",
       "parameter_schema": {
         "version": 1,
         "fields": [
@@ -832,7 +832,7 @@
       "model_key": "qwen-image-3.0",
       "display_name": "Qwen Image 3.0",
       "operation_id": "image_generation",
-      "request_mode": "dashscope-images",
+      "request_mode": "dashscope-native-images",
       "parameter_schema": {
         "version": 1,
         "fields": [
@@ -965,7 +965,7 @@
       "model_key": "qwen-image-2.1-pro",
       "display_name": "Qwen Image 2.1 Pro",
       "operation_id": "image_generation",
-      "request_mode": "dashscope-images",
+      "request_mode": "dashscope-native-images",
       "parameter_schema": {
         "version": 1,
         "fields": [
@@ -1076,7 +1076,7 @@
       "model_key": "qwen-image-2.1-turbo",
       "display_name": "Qwen Image 2.1 Turbo",
       "operation_id": "image_generation",
-      "request_mode": "dashscope-images",
+      "request_mode": "dashscope-native-images",
       "parameter_schema": {
         "version": 1,
         "fields": [
